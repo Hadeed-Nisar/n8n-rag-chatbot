@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Document Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <style>
+        /* --- Page Styling --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .open-chat-btn {
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .open-chat-btn:hover {
+            background-color: #4338CA;
+        }
+
+        /* --- Mobile Fix for Chat Widget --- */
+        @media (max-width: 768px) {
+            .n8n-chat-widget { 
+                width: 100% !important; 
+                height: 100% !important; 
+                bottom: 0 !important; 
+                right: 0 !important; 
+                border-radius: 0 !important; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Document Assistant</h1>
+        <p>
+            Welcome! This is a custom RAG (Retrieval-Augmented Generation) chatbot. 
+            It uses a Supabase Vector Database and Google Gemini to answer questions based on the provided PDF documents.
+        </p>
+        <button class="open-chat-btn" id="start-chat-btn">
+            Click the chat bubble in the bottom right corner
+        </button>
+        
+    </div>
+
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        const chat = createChat({
+            webhookUrl: 'https://subtitle-spiffy-detection.ngrok-free.dev/webhook/5f283d23-d39a-429d-8cfe-ad05c50db341/chat',
+            initialMessages: [
+                'Hi there! 👋',
+                'My name is Nathan. I have read the document. What would you like to know?'
+            ]
+        });
+
+        // This makes the custom button open the chat window
+        document.getElementById('start-chat-btn').addEventListener('click', () => {
+            // The n8n chat widget uses this specific function to open
+            if(chat && chat.open) {
+                chat.open();
+            } else {
+                // Fallback: if the user clicks the button, simulate a click on the n8n bubble
+                document.querySelector('.n8n-chat-toggle').click();
+            }
+        });
+    </script>
+
+</body>
+</html>
